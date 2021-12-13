@@ -24,5 +24,6 @@ newTestCases.add(a);
 newTestCases.add(b);
 upsert(newTestCases);
 
+WarehouseCalloutService.WarehouseCalloutService();
 
 System.debug(System.TODAY() + 30);
