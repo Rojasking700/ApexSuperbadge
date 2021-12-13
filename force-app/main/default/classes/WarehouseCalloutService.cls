@@ -7,24 +7,22 @@ public with sharing class WarehouseCalloutService {
         HttpResponse response = http.send(request);
 
         if(response.getStatusCode() == 200){
-            List<Product2> newEquipment = new list<Product2>();
+            List<Product2> newEquipment = new list<Product2>(); //starts an empty list for the new equipment to be updated 
 
-            System.debug(JSON.deserializeUntyped(response.getBody()));
-            List<Object> listEquipment = (List<Object>) JSON.deserializeUntyped(response.getBody());
-            System.debug('equipment: ' + listEquipment);
-            // Map<String,Object> mapEquipment = new Map<String,Object>();
+            List<Object> listEquipment = (List<Object>) JSON.deserializeUntyped(response.getBody()); //sets the callout data to a list
             
-            for(Object e: listEquipment){
-                Map<String,Object> mapE = (Map<String,Object>)e;
-                System.debug('map e: ' + mapE.get('_id'));
+            for(Object e: listEquipment){// for each object in the listEquipment
+                Map<String,Object> mapE = (Map<String,Object>)e; //sets the object equal to a map 
+
+                //creates a new product sObject and adds the paramaters from the JSON object to the sObject
                 Product2 newEquip = new Product2( replacement_part__c=(Boolean)mapE.get('replacement'), Current_Inventory__c=(decimal)mapE.get('quantity'), 
                                     Name=(string)mapE.get('name'), Maintenance_Cycle__c=(decimal)mapE.get('maintenanceperiod'), 
                                     Lifespan_Months__c=(decimal)mapE.get('lifespan'), Cost__c=(decimal)mapE.get('cost'), Warehouse_SKU__c=(string)mapE.get('sku'));
 
-                newEquipment.add(newEquip);    
+                newEquipment.add(newEquip); // adds the new equipment to the list 
             }
 
-            upsert newEquipment;
+            upsert newEquipment; //updates the equipment list to the org
 
         }
     }
